@@ -37,7 +37,7 @@ PORT = 5010
 # example:
 #      Redis: redis://:password@ip:port/db
 #      Ssdb:  ssdb://:password@ip:port
-DB_CONN = 'redis://:pwd@127.0.0.1:6379/0'
+DB_CONN = 'redis://ippool:Ippool123@r-bp1b9d8ea5f73aa4pd.redis.rds.aliyuncs.com:6379/0'
 
 # proxy table name
 TABLE_NAME = 'use_proxy'
@@ -45,12 +45,12 @@ TABLE_NAME = 'use_proxy'
 
 # ###### config the proxy fetch function ######
 PROXY_FETCHER = [
-    "freeProxy01",
+   # "freeProxy01",
     "freeProxy02",
     "freeProxy03",
     "freeProxy04",
     "freeProxy05",
-    "freeProxy06",
+   # "freeProxy06",
     "freeProxy07",
     "freeProxy08",
     "freeProxy09",
@@ -73,7 +73,7 @@ MAX_FAIL_COUNT = 0
 # MAX_FAIL_RATE = 0.1
 
 # proxyCheck时代理数量少于POOL_SIZE_MIN触发抓取
-POOL_SIZE_MIN = 20
+POOL_SIZE_MIN = 100
 
 # ############# proxy attributes #################
 # 是否启用代理地域属性
