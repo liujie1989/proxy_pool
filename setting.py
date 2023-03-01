@@ -25,7 +25,7 @@ BANNER = r"""
 ****************************************************************
 """
 
-VERSION = "2.1.1"
+VERSION = "2.4.0"
 
 # ############### server config ###############
 HOST = "0.0.0.0"
@@ -37,8 +37,7 @@ PORT = 5010
 # example:
 #      Redis: redis://:password@ip:port/db
 #      Ssdb:  ssdb://:password@ip:port
-# DB_CONN = 'redis://ippool:Ippool123@r-bp1b9d8ea5f73aa4pd.redis.rds.aliyuncs.com:6379/0'
-DB_CONN = 'redis://125.124.205.37:6379/1'
+DB_CONN = 'redis://:pwd@127.0.0.1:6379/0'
 
 # proxy table name
 TABLE_NAME = 'use_proxy'
@@ -46,44 +45,47 @@ TABLE_NAME = 'use_proxy'
 
 # ###### config the proxy fetch function ######
 PROXY_FETCHER = [
-   # "freeProxy01",
+    "freeProxy01",
     "freeProxy02",
-    # "freeProxy03",
+    "freeProxy03",
     "freeProxy04",
     "freeProxy05",
-   # "freeProxy06",
+    "freeProxy06",
     "freeProxy07",
-    # "freeProxy08",
+    "freeProxy08",
     "freeProxy09",
-    "freeProxy13",
-    "freeProxy14"
+    "freeProxy10"
 ]
 
 # ############# proxy validator #################
-VERIFY_URL = "http://www.baidu.com"
+# 代理验证目标网站
+HTTP_URL = "http://httpbin.org"
+
+HTTPS_URL = "https://www.qq.com"
 
 # 代理验证时超时时间
 VERIFY_TIMEOUT = 10
-
-# 代理校验规则基于的最近校验次数
-PROXY_CHECK_COUNT = 10
 
 # 近PROXY_CHECK_COUNT次校验中允许的最大失败次数,超过则剔除代理
 MAX_FAIL_COUNT = 0
 
 # 近PROXY_CHECK_COUNT次校验中允许的最大失败率,超过则剔除代理
-MAX_FAIL_RATE = 0.1
+# MAX_FAIL_RATE = 0.1
 
 # proxyCheck时代理数量少于POOL_SIZE_MIN触发抓取
-POOL_SIZE_MIN = 100
+POOL_SIZE_MIN = 20
+
+# ############# proxy attributes #################
+# 是否启用代理地域属性
+PROXY_REGION = True
 
 # ############# scheduler config #################
 
 # Set the timezone for the scheduler forcely (optional)
-# If it is running on a VM, and 
-#   "ValueError: Timezone offset does not match system offset" 
+# If it is running on a VM, and
+#   "ValueError: Timezone offset does not match system offset"
 #   was raised during scheduling.
 # Please uncomment the following line and set a timezone for the scheduler.
 # Otherwise it will detect the timezone from the system automatically.
 
-# TIMEZONE = "Asia/Shanghai"
+TIMEZONE = "Asia/Shanghai"

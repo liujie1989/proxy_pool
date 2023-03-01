@@ -46,29 +46,38 @@ class ConfigHandler(withMetaclass(Singleton)):
         return setting.PROXY_FETCHER
 
     @LazyProperty
-    def verifyUrl(self):
-        return os.getenv("VERIFY_URL", setting.VERIFY_URL)
+    def httpUrl(self):
+        return os.getenv("HTTP_URL", setting.HTTP_URL)
+
+    @LazyProperty
+    def httpsUrl(self):
+        return os.getenv("HTTPS_URL", setting.HTTPS_URL)
 
     @LazyProperty
     def verifyTimeout(self):
-        return os.getenv("VERIFY_TIMEOUT", setting.VERIFY_TIMEOUT)
+        return int(os.getenv("VERIFY_TIMEOUT", setting.VERIFY_TIMEOUT))
 
-    @LazyProperty
-    def proxyCheckCount(self):
-        return os.getenv("PROXY_CHECK_COUNT", setting.PROXY_CHECK_COUNT)
+    # @LazyProperty
+    # def proxyCheckCount(self):
+    #     return int(os.getenv("PROXY_CHECK_COUNT", setting.PROXY_CHECK_COUNT))
 
     @LazyProperty
     def maxFailCount(self):
-        return os.getenv("MAX_FAIL_COUNT", setting.MAX_FAIL_COUNT)
+        return int(os.getenv("MAX_FAIL_COUNT", setting.MAX_FAIL_COUNT))
 
-    @LazyProperty
-    def maxFailRate(self):
-        return os.getenv("MAX_FAIL_RATE", setting.MAX_FAIL_RATE)
+    # @LazyProperty
+    # def maxFailRate(self):
+    #     return int(os.getenv("MAX_FAIL_RATE", setting.MAX_FAIL_RATE))
 
     @LazyProperty
     def poolSizeMin(self):
-        return os.getenv("POOL_SIZE_MIN", setting.POOL_SIZE_MIN)
+        return int(os.getenv("POOL_SIZE_MIN", setting.POOL_SIZE_MIN))
+
+    @LazyProperty
+    def proxyRegion(self):
+        return bool(os.getenv("PROXY_REGION", setting.PROXY_REGION))
 
     @LazyProperty
     def timezone(self):
-        return os.getenv("TIMEZONE", getattr(setting, 'TIMEZONE', None))
+        return os.getenv("TIMEZONE", setting.TIMEZONE)
+

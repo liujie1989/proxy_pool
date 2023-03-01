@@ -11,6 +11,7 @@
                    2016/12/04: WebApi
                    2019/08/14: 集成Gunicorn启动方式
                    2020/06/23: 新增pop接口
+                   2022/07/21: 更新count接口
 -------------------------------------------------
 """
 __author__ = 'JHao'
@@ -20,9 +21,9 @@ from werkzeug.wrappers import Response
 from flask import Flask, jsonify, request
 
 from util.six import iteritems
+from helper.proxy import Proxy
 from handler.proxyHandler import ProxyHandler
 from handler.configHandler import ConfigHandler
-from helper.proxy import Proxy
 
 app = Flask(__name__)
 conf = ConfigHandler()
@@ -40,30 +41,32 @@ class JsonResponse(Response):
 
 app.response_class = JsonResponse
 
-api_list = {
-    'get': u'get an useful proxy',
-    'pop': u'get and delete an useful proxy',
-    # 'refresh': u'refresh proxy pool',
-    'get_all': u'get all proxy from proxy pool',
-    'delete?proxy=127.0.0.1:8080': u'delete an unable proxy',
-    'get_status': u'proxy number'
-}
+api_list = [
+    {"url": "/get", "params": "type: ''https'|''", "desc": "get a proxy"},
+    {"url": "/pop", "params": "", "desc": "get and delete a proxy"},
+    {"url": "/delete", "params": "proxy: 'e.g. 127.0.0.1:8080'", "desc": "delete an unable proxy"},
+    {"url": "/all", "params": "type: ''https'|''", "desc": "get all proxy from proxy pool"},
+    {"url": "/count", "params": "", "desc": "return proxy count"}
+    # 'refresh': 'refresh proxy pool',
+]
 
 
 @app.route('/')
 def index():
-    return api_list
+    return {'url': api_list}
 
 
 @app.route('/get/')
 def get():
-    proxy = proxy_handler.get()
+    https = request.args.get("type", "").lower() == 'https'
+    proxy = proxy_handler.get(https)
     return proxy.to_dict if proxy else {"code": 0, "src": "no proxy"}
 
 
 @app.route('/pop/')
 def pop():
-    proxy = proxy_handler.pop()
+    https = request.args.get("type", "").lower() == 'https'
+    proxy = proxy_handler.pop(https)
     return proxy.to_dict if proxy else {"code": 0, "src": "no proxy"}
 
 
@@ -73,9 +76,10 @@ def refresh():
     return 'success'
 
 
-@app.route('/get_all/')
+@app.route('/all/')
 def getAll():
-    proxies = proxy_handler.getAll()
+    https = request.args.get("type", "").lower() == 'https'
+    proxies = proxy_handler.getAll(https)
     return jsonify([_.to_dict for _ in proxies])
 
 
@@ -86,10 +90,17 @@ def delete():
     return {"code": 0, "src": status}
 
 
-@app.route('/get_status/')
-def getStatus():
-    status = proxy_handler.getCount()
-    return status
+@app.route('/count/')
+def getCount():
+    proxies = proxy_handler.getAll()
+    http_type_dict = {}
+    source_dict = {}
+    for proxy in proxies:
+        http_type = 'https' if proxy.https else 'http'
+        http_type_dict[http_type] = http_type_dict.get(http_type, 0) + 1
+        for source in proxy.source.split('/'):
+            source_dict[source] = source_dict.get(source, 0) + 1
+    return {"http_type": http_type_dict, "source": source_dict, "count": len(proxies)}
 
 
 def runFlask():

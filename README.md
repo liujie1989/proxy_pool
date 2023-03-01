@@ -17,15 +17,24 @@ ProxyPool 爬虫代理IP池
                            __ / /
                           /___ /
 
-### ProxyPool  
+### ProxyPool
 
 爬虫代理IP池项目,主要功能为定时采集网上发布的免费代理验证入库，定时验证入库的代理保证代理的可用性，提供API和CLI两种使用方式。同时你也可以扩展代理源以增加代理池IP的质量和数量。
 
 * 文档: [document](https://proxy-pool.readthedocs.io/zh/latest/) [![Documentation Status](https://readthedocs.org/projects/proxy-pool/badge/?version=latest)](https://proxy-pool.readthedocs.io/zh/latest/?badge=latest)
 
-* 支持版本: ![](https://img.shields.io/badge/Python-2.x-green.svg) ![](https://img.shields.io/badge/Python-3.x-blue.svg)
+* 支持版本: [![](https://img.shields.io/badge/Python-2.7-green.svg)](https://docs.python.org/2.7/)
+[![](https://img.shields.io/badge/Python-3.5-blue.svg)](https://docs.python.org/3.5/)
+[![](https://img.shields.io/badge/Python-3.6-blue.svg)](https://docs.python.org/3.6/)
+[![](https://img.shields.io/badge/Python-3.7-blue.svg)](https://docs.python.org/3.7/)
+[![](https://img.shields.io/badge/Python-3.8-blue.svg)](https://docs.python.org/3.8/)
+[![](https://img.shields.io/badge/Python-3.9-blue.svg)](https://docs.python.org/3.9/)
+[![](https://img.shields.io/badge/Python-3.10-blue.svg)](https://docs.python.org/3.10/)
+[![](https://img.shields.io/badge/Python-3.11-blue.svg)](https://docs.python.org/3.11/)
 
-* 测试地址: http://118.24.52.95 (单机勿压)
+* 测试地址: http://demo.spiderpy.cn (勿压谢谢)
+
+* 付费代理推荐: [luminati-china](https://brightdata.grsm.io/proxyPool). 国外的亮数据BrightData（以前叫luminati）被认为是代理市场领导者，覆盖全球的7200万IP，大部分是真人住宅IP，成功率扛扛的。付费套餐多种，需要高质量代理IP的可以注册后联系中文客服，开通后赠送5美金余额和教程指引(PS:用不明白的同学可以参考这个[使用教程](https://www.cnblogs.com/jhao/p/15611785.html))。
 
 
 ### 运行项目
@@ -90,14 +99,19 @@ python proxyPool.py server
 
 ```
 
-### Docker运行
+### Docker Image
 
 ```bash
 docker pull jhao104/proxy_pool
 
-docker run --env DB_CONN=redis://:password@ip:port/db -p 5010:5010 jhao104/proxy_pool:latest
+docker run --env DB_CONN=redis://:password@ip:port/0 -p 5010:5010 jhao104/proxy_pool:latest
 ```
+### docker-compose
 
+项目目录下运行: 
+``` bash
+docker-compose up -d
+```
 
 ### 使用
 
@@ -105,13 +119,15 @@ docker run --env DB_CONN=redis://:password@ip:port/db -p 5010:5010 jhao104/proxy
 
 启动web服务后, 默认配置下会开启 http://127.0.0.1:5010 的api接口服务:
 
-| api | method | Description | arg|
+| api | method | Description | params|
 | ----| ---- | ---- | ----|
 | / | GET | api介绍 | None |
-| /get | GET | 随机获取一个代理 | None|
-| /get_all | GET | 获取所有代理 |None|
-| /get_status | GET | 查看代理数量 |None|
-| /delete | GET | 删除代理  |proxy=host:ip|
+| /get | GET | 随机获取一个代理| 可选参数: `?type=https` 过滤支持https的代理|
+| /pop | GET | 获取并删除一个代理| 可选参数: `?type=https` 过滤支持https的代理|
+| /all | GET | 获取所有代理 |可选参数: `?type=https` 过滤支持https的代理|
+| /count | GET | 查看代理数量 |None|
+| /delete | GET | 删除代理  |`?proxy=host:ip`|
+
 
 * 爬虫使用
 
@@ -192,17 +208,16 @@ PROXY_FETCHER = [
    
   |   代理名称   |  状态  |  更新速度 |  可用率  |  地址 |    代码   |
   | ---------   |  ---- | --------  | ------  | ----- |   ------- |
-  | 无忧代理     |  √    |     ★     |   *    | [地址](http://www.data5u.com/) | `freeProxy01` |
-  | 66代理      |   √    |    ★★    |   *    |  [地址](http://www.66ip.cn/) |  `freeProxy02`  |
-  | ~~西刺代理~~ | ~~已关闭~~ | ——   |   ——   | ~~[地址](http://www.xicidaili.com)~~| ~~`freeProxy03`~~|
-  | 全网代理     |  √    |   ★       |   *   | [地址](http://www.goubanjia.com/)| `freeProxy04` |
-  | 快代理      |  √     |   ☆       |   *   | [地址](https://www.kuaidaili.com/)| `freeProxy05` |
-  | 代理盒子    |  √     |  ★★★      |   *   | [地址](https://proxy.coderbusy.com/)| `freeProxy06` |
-  | 云代理      |  √     |  ★        |   *   | [地址](http://www.ip3366.net/)|  `freeProxy07`   |
-  | ~~IP海~~   |~~已关闭~~|  ——      |   ——  | ~~[地址](http://www.iphai.com/)~~|~~`freeProxy08`~~|
-  | 免费代理库  |  √     |   ☆       |   *   | [地址](http://ip.jiangxianli.com/)| `freeProxy09` |
-  | 89代理     |   √    |    ☆      |   *   | [地址](http://cn-proxy.com/)| `freeProxy13` |
-  | 西拉代理    |  √     |   ★★      |   *   | [地址](https://proxy-list.org/chinese/index.php)| `freeProxy14` |
+  | 站大爷     |  ✔    |     ★     |   **     | [地址](https://www.zdaye.com/)    | [`freeProxy01`](/fetcher/proxyFetcher.py#L28) |
+  | 66代理     |  ✔    |     ★     |   *     | [地址](http://www.66ip.cn/)         | [`freeProxy02`](/fetcher/proxyFetcher.py#L50) |
+  | 开心代理     |   ✔   |     ★     |   *     | [地址](http://www.kxdaili.com/)     | [`freeProxy03`](/fetcher/proxyFetcher.py#L63)  |
+  | FreeProxyList |   ✔  |    ★     |   *    | [地址](https://www.freeproxylists.net/zh/) | [`freeProxy04`](/fetcher/proxyFetcher.py#L74) |
+  | 快代理       |  ✔    |     ★     |   *     | [地址](https://www.kuaidaili.com/)  | [`freeProxy05`](/fetcher/proxyFetcher.py#L92)  |
+  | FateZero    |  ✔    |    ★★    |   *     | [地址](http://proxylist.fatezero.org) | [`freeProxy06`](/fetcher/proxyFetcher.py#L111) |
+  | 云代理       |  ✔    |     ★     |   *     | [地址](http://www.ip3366.net/)      | [`freeProxy07`](/fetcher/proxyFetcher.py#L124) |
+  | 小幻代理     |  ✔    |     ★★    |    *    | [地址](https://ip.ihuan.me/)        | [`freeProxy08`](/fetcher/proxyFetcher.py#L134) |
+  | 免费代理库   |  ✔    |      ☆     |    *    | [地址](http://ip.jiangxianli.com/)   | [`freeProxy09`](/fetcher/proxyFetcher.py#L144) |
+  | 89代理      |  ✔    |      ☆     |   *     | [地址](https://www.89ip.cn/)         | [`freeProxy10`](/fetcher/proxyFetcher.py#L155) |
 
   
   如果还有其他好的免费代理网站, 可以在提交在[issues](https://github.com/jhao104/proxy_pool/issues/71), 下次更新时会考虑在项目中支持。
@@ -221,7 +236,7 @@ PROXY_FETCHER = [
 
 　　这里感谢以下contributor的无私奉献：
 
-　　[@kangnwh](https://github.com/kangnwh)| [@bobobo80](https://github.com/bobobo80)| [@halleywj](https://github.com/halleywj)| [@newlyedward](https://github.com/newlyedward)| [@wang-ye](https://github.com/wang-ye)| [@gladmo](https://github.com/gladmo)| [@bernieyangmh](https://github.com/bernieyangmh)| [@PythonYXY](https://github.com/PythonYXY)| [@zuijiawoniu](https://github.com/zuijiawoniu)| [@netAir](https://github.com/netAir)| [@scil](https://github.com/scil)| [@tangrela](https://github.com/tangrela)| [@highroom](https://github.com/highroom)| [@luocaodan](https://github.com/luocaodan)| [@vc5](https://github.com/vc5)| [@1again](https://github.com/1again)| [@obaiyan](https://github.com/obaiyan) [@zsbh](https://github.com/zsbh)
+　　[@kangnwh](https://github.com/kangnwh) | [@bobobo80](https://github.com/bobobo80) | [@halleywj](https://github.com/halleywj) | [@newlyedward](https://github.com/newlyedward) | [@wang-ye](https://github.com/wang-ye) | [@gladmo](https://github.com/gladmo) | [@bernieyangmh](https://github.com/bernieyangmh) | [@PythonYXY](https://github.com/PythonYXY) | [@zuijiawoniu](https://github.com/zuijiawoniu) | [@netAir](https://github.com/netAir) | [@scil](https://github.com/scil) | [@tangrela](https://github.com/tangrela) | [@highroom](https://github.com/highroom) | [@luocaodan](https://github.com/luocaodan) | [@vc5](https://github.com/vc5) | [@1again](https://github.com/1again) | [@obaiyan](https://github.com/obaiyan) | [@zsbh](https://github.com/zsbh) | [@jiannanya](https://github.com/jiannanya) | [@Jerry12228](https://github.com/Jerry12228)
 
 
 ### Release Notes
