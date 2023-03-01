@@ -79,10 +79,6 @@ POOL_SIZE_MIN = 20
 # 是否启用代理地域属性
 PROXY_REGION = True
 
-# ############# proxy attributes #################
-# 是否启用代理地域属性
-PROXY_REGION = True
-
 # ############# scheduler config #################
 
 # Set the timezone for the scheduler forcely (optional)
