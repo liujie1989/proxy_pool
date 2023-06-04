@@ -16,7 +16,10 @@ play86Hostreferer = {
     'User-Agent': ua.random,
     'Referer': 'http://www.play86.vip/'
 }
-
+jietiandiHostreferer = {
+    'User-Agent': ua.random,
+    'Referer': 'https://www.jietiandi.net/'
+}
 
 def get_proxy():
     return requests.get("http://127.0.0.1:5010/get/").json()
@@ -101,6 +104,7 @@ if __name__ == "__main__":
     eurl = 'http://acgvv.cyou/D6DF7t6z'
     eurl = 'https://www.guyunsq.com/?fromuid=6265'
     eurl = 'https://www.58shuyou.com/?fromuid=1155311'
-    getHtml(count, eurl, Hostreferer)
+    # getHtml(count, eurl, Hostreferer)
     # getEHtml(count,eurl,Hostreferer)
-    # getHtml(playcount,playurl,play86Hostreferer)
+    jietiandiurl = 'https://www.jietiandi.net/?fromuid=60642'
+    getHtml(playcount, jietiandiurl, jietiandiHostreferer)
