@@ -71,7 +71,7 @@ def getEHtml(count, url, hostRefer):
             try:
 
                 chrome_options = webdriver.ChromeOptions()
-                # chrome_options.add_argument('headless')
+                chrome_options.add_argument('headless')
                 chrome_options.add_argument('--proxy-server={0}'.format(proxy))
                 # 一定要注意，=两边不能有空格，不能是这样--proxy-server = 202.20.16.82:10152
                 browser = webdriver.Chrome(chrome_options=chrome_options)
@@ -96,7 +96,7 @@ def getEHtml(count, url, hostRefer):
 
 
 if __name__ == "__main__":
-    playcount = 5
+    playcount = 20
     count = 10000
     playurl = 'http://www.play86.com/u.asp?id=188517'
     url = 'https://new12-22.book.meiguolvka.com/?fromuid=803198'
@@ -107,4 +107,4 @@ if __name__ == "__main__":
     # getHtml(count, eurl, Hostreferer)
     # getEHtml(count,eurl,Hostreferer)
     jietiandiurl = 'https://www.jietiandi.net/?fromuid=60642'
-    getHtml(playcount, jietiandiurl, jietiandiHostreferer)
+    getEHtml(playcount, jietiandiurl, jietiandiHostreferer)
