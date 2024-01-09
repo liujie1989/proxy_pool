@@ -78,6 +78,24 @@ class ProxyFetcher(object):
                 yield "%s:%s" % (ip, port)
 
     @staticmethod
+    def freeProxy04():
+        """ FreeProxyList https://www.freeproxylists.net/zh/ """
+        url = "https://www.freeproxylists.net/zh/?c=CN&pt=&pr=&a%5B%5D=0&a%5B%5D=1&a%5B%5D=2&u=50"
+        tree = WebRequest().get(url, verify=False).tree
+        from urllib import parse
+
+        def parse_ip(input_str):
+            html_str = parse.unquote(input_str)
+            ips = re.findall(r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', html_str)
+            return ips[0] if ips else None
+
+        for tr in tree.xpath("//tr[@class='Odd']") + tree.xpath("//tr[@class='Even']"):
+            ip = parse_ip("".join(tr.xpath('./td[1]/script/text()')).strip())
+            port = "".join(tr.xpath('./td[2]/text()')).strip()
+            if ip:
+                yield "%s:%s" % (ip, port)
+
+    @staticmethod
     def freeProxy05(page_count=10):
         """ 快代理 https://www.kuaidaili.com """
         url_pattern = [
@@ -92,10 +110,21 @@ class ProxyFetcher(object):
         for url in url_list:
             tree = WebRequest().get(url).tree
             proxy_list = tree.xpath('.//table//tr')
-            sleep(10)  # 必须sleep 不然第二条请求不到数据
+            sleep(1)  # 必须sleep 不然第二条请求不到数据
             for tr in proxy_list[1:]:
                 yield ':'.join(tr.xpath('./td/text()')[0:2])
 
+    @staticmethod
+    def freeProxy06():
+        """ 冰凌代理 https://www.binglx.cn """
+        url = "https://www.binglx.cn/?page=1"
+        try:
+            tree = WebRequest().get(url).tree
+            proxy_list = tree.xpath('.//table//tr')
+            for tr in proxy_list[1:]:
+                yield ':'.join(tr.xpath('./td/text()')[0:2])
+        except Exception as e:
+            print(e)
 
     @staticmethod
     def freeProxy07():
@@ -126,8 +155,8 @@ class ProxyFetcher(object):
     def freeProxy10():
         """
         89免费代理
-        怀疑封国外请求,境外服务器爬取异常. 
-        
+        怀疑封国外请求,境外服务器爬取异常.
+
         """
         url = "https://www.89ip.cn/{}.html"
         target_url = url.format('index_1')
